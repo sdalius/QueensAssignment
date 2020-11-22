@@ -2,8 +2,6 @@ import java.util.Arrays;
 
 class Matrix {
     private int[][] board;
-    private int row;
-    private int col;
 
     // 0 - area is not touched
     // 1 - danger zone, other queen can attack
@@ -26,7 +24,8 @@ class Matrix {
     {
         for(int i=0; i < board.length ;i++)
         {
-            for(int j = 0; j<board[i].length; j++)
+            int j;
+            for(j = 0; j < board[i].length; j++)
             {
                 board[i][j] = 0;
             }
@@ -44,10 +43,10 @@ class Matrix {
     }
 
     /* add queen on the board */
-    void addQueen(int row, int col, int val)
+    void addQueen(int row, int col)
     {
         System.out.println("Adding queen to " + "Row: " +  row + " " + "Col: " + col);
-        board[row][col] = val;
+        board[row][col] = 2;
         /* Fill the board according to the algorithm */
         fillRow(row);
         fillCol(col);
@@ -59,7 +58,7 @@ class Matrix {
 
     /* ===================================== Fill Danger Zones =========================================*/
     /* filling row with danger zones */
-    private boolean fillRow(int row)
+    private void fillRow(int row)
     {
         for(int i=0; i < board.length ;i++)
         {
@@ -76,11 +75,10 @@ class Matrix {
 //        System.out.println("Print board after filling row");
 //        printBoard();
 //        System.out.println("============================");
-        return true;
     }
 
     /* filling column with danger zones */
-    private boolean fillCol(int col)
+    private void fillCol(int col)
     {
         for(int i=0; i < board.length ;i++)
         {
@@ -97,11 +95,10 @@ class Matrix {
 //        System.out.println("Print board after filling col");
 //        printBoard();
 //        System.out.println("============================");
-        return true;
     }
 
     /* Top right filling with danger zones */
-    private boolean fillTopRight(int row, int col)
+    private void fillTopRight(int row, int col)
     {
         while(row > -1 && col < board.length )
         {
@@ -118,11 +115,10 @@ class Matrix {
 //        System.out.println("Print board top right");
 //        printBoard();
 //        System.out.println("============================");
-        return true;
     }
 
     /* Top left filling with danger zones */
-    private boolean fillTopLeft(int row, int col)
+    private void fillTopLeft(int row, int col)
     {
         while(row > -1 && col > -1 )
         {
@@ -139,11 +135,10 @@ class Matrix {
 //        System.out.println("Print board top left");
 //        printBoard();
 //        System.out.println("============================");
-        return true;
     }
 
     /* Bot left filling with danger zones */
-    private boolean fillBotLeft(int row, int col)
+    private void fillBotLeft(int row, int col)
     {
         while(row < board.length && col > -1 )
         {
@@ -160,11 +155,10 @@ class Matrix {
 //        System.out.println("Print board bot left");
 //        printBoard();
 //        System.out.println("============================");
-        return true;
     }
 
     /* Bot right filling with danger zones */
-    private boolean fillBotRight(int row, int col)
+    private void fillBotRight(int row, int col)
     {
         while(row < board.length && col < board.length)
         {
@@ -181,7 +175,6 @@ class Matrix {
 //        System.out.println("Print board bot right");
 //        printBoard();
 //        System.out.println("============================");
-        return true;
     }
     /* ===================================== Checks ====================================================*/
 
@@ -211,7 +204,7 @@ class Matrix {
     }
 
     /* Checking if the top right side doesn't have queens, by given the current location of the queen */
-    public boolean isTopRightOk(int row, int col)
+    boolean isTopRightOk(int row, int col)
     {
         while(row > -1 && col < board.length )
         {
@@ -226,7 +219,7 @@ class Matrix {
     }
 
     //Checking if we have queens from top to the left
-    public boolean isTopLeftOk(int row, int col)
+    boolean isTopLeftOk(int row, int col)
     {
         while(row > -1 && col > -1 )
         {
@@ -241,7 +234,7 @@ class Matrix {
     }
 
     //Checking if we have queens from bottom to the left
-    public boolean isBotLeftOk(int row, int col)
+    boolean isBotLeftOk(int row, int col)
     {
         while(row < board.length && col > -1 )
         {
@@ -256,7 +249,7 @@ class Matrix {
     }
 
     //Checking if we have queens from bottom to the right
-    public boolean isBotRightOk(int row, int col)
+    boolean isBotRightOk(int row, int col)
     {
         while(row < board.length && col < board.length)
         {
@@ -269,23 +262,19 @@ class Matrix {
         }
         return false;
     }
-
+    /* dummy code to check if all of the columns has a queen, then we can call it that it has a solution. */
     boolean hasSolution()
     {
         int size = 0;
-        for(int i=0; i < board.length ;i++)
-        {
-            for(int j = 0; j < board[i].length; j++)
-            {
-                if(board[i][j] == 2) {
+        /* loops through entire columns */
+        for(int[] ints : board) {
+            for(int anInt : ints) {
+                if(anInt == 2) {
                     size++;
                 }
             }
         }
-        if(board.length == size)
-        {
-            return true;
-        }
-        return false;
+        /* if the size is equals to the board size, then it means all of the columns has a queen, and it has a solution */
+        return board.length == size;
     }
 }
