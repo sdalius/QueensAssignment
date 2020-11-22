@@ -274,7 +274,7 @@ class Matrix {
                 }
             }
         }
-        /* if the size is equals to the board size, then it means all of the columns has a queen, and it has a solution */
+        /* i assume that if the size is equals to the board size, then it means all of the columns has a queen, and it has a solution */
         return board.length == size;
     }
 }
