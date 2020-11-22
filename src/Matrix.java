@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Matrix {
+class Matrix {
     private int[][] board;
     private int row;
     private int col;
@@ -9,13 +9,20 @@ public class Matrix {
     // 1 - danger zone, other queen can attack
     // 2 - queen
 
-    public Matrix(int row , int col)
+    Matrix(int sizeofboard)
     {
-        board = new int[row][col];
-        fillMatrix();
+        if (!(sizeofboard > 3))
+        {
+            System.out.println("n must be bigger than 3. Quitting...");
+            System.exit(1);
+        }
+        else{
+            board = new int[sizeofboard][sizeofboard];
+            fillMatrix();
+        }
     }
 
-    public void fillMatrix()
+    void fillMatrix()
     {
         for(int i=0; i < board.length ;i++)
         {
@@ -26,21 +33,22 @@ public class Matrix {
         }
     }
 
-    public int[][] getBoard() {
+    int[][] getBoard() {
         return board;
     }
 
-    public void printBoard()
+    void printBoard()
     {
         for (int[] row : board)
             System.out.println(Arrays.toString(row));
     }
 
     /* add queen on the board */
-    public void addQueen(int row , int col, int val)
+    void addQueen(int row, int col, int val)
     {
         System.out.println("Adding queen to " + "Row: " +  row + " " + "Col: " + col);
         board[row][col] = val;
+        /* Fill the board according to the algorithm */
         fillRow(row);
         fillCol(col);
         fillTopLeft(row,col);
@@ -51,7 +59,7 @@ public class Matrix {
 
     /* ===================================== Fill Danger Zones =========================================*/
     /* filling row with danger zones */
-    public boolean fillRow(int row)
+    private boolean fillRow(int row)
     {
         for(int i=0; i < board.length ;i++)
         {
@@ -72,7 +80,7 @@ public class Matrix {
     }
 
     /* filling column with danger zones */
-    public boolean fillCol(int col)
+    private boolean fillCol(int col)
     {
         for(int i=0; i < board.length ;i++)
         {
@@ -93,7 +101,7 @@ public class Matrix {
     }
 
     /* Top right filling with danger zones */
-    public boolean fillTopRight(int row, int col)
+    private boolean fillTopRight(int row, int col)
     {
         while(row > -1 && col < board.length )
         {
@@ -114,7 +122,7 @@ public class Matrix {
     }
 
     /* Top left filling with danger zones */
-    public boolean fillTopLeft(int row, int col)
+    private boolean fillTopLeft(int row, int col)
     {
         while(row > -1 && col > -1 )
         {
@@ -135,7 +143,7 @@ public class Matrix {
     }
 
     /* Bot left filling with danger zones */
-    public boolean fillBotLeft(int row, int col)
+    private boolean fillBotLeft(int row, int col)
     {
         while(row < board.length && col > -1 )
         {
@@ -156,7 +164,7 @@ public class Matrix {
     }
 
     /* Bot right filling with danger zones */
-    public boolean fillBotRight(int row, int col)
+    private boolean fillBotRight(int row, int col)
     {
         while(row < board.length && col < board.length)
         {
@@ -177,13 +185,12 @@ public class Matrix {
     }
     /* ===================================== Checks ====================================================*/
 
-    // TODO Fix this
     /* checking if row doesn't have any other queens */
-    public boolean isRowOk(int row)
+    boolean isRowOk(int row)
     {
         for(int i=0; i < board.length ;i++)
         {
-            if(board[i][row] == 0 )
+            if(board[row][i] == 0 )
             {
                 return true;
             }
@@ -192,14 +199,13 @@ public class Matrix {
     }
 
     /* checking if column doesn't have any other queens */
-    public boolean isColOk(int col)
+    boolean isColOk(int col)
     {
-        for(int i=0; i < board.length ;i++)
-        {
-            if(board[i][col] == 0)
-            {
-                return true;
+        for(int[] ints : board) {
+            if(ints[col] != 0) {
+                continue;
             }
+            return true;
         }
         return false;
     }
